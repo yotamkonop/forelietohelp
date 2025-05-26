@@ -253,7 +253,7 @@ remove_from_playlist: SUCCESS
 get_plays: SUCCESS, 250
 get_plays: SUCCESS, 785
 get_plays: SUCCESS, 312
-add to playlist: should be:0  1
+add to playlist: should be:1  1
 add_to_playlist: SUCCESS
 get_num_songs: SUCCESS, 10
 get_by_plays: SUCCESS, 1040904

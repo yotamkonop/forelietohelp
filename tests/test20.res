@@ -449,6 +449,8 @@ add to playlist: should be:0  0
 add_to_playlist: SUCCESS
 add_song: SUCCESS
 get_plays: SUCCESS, 100
+num playlists: 1  num pointers: 9
+num playlists: 1  num pointers: 10
 unite_playlists: SUCCESS
 add to playlist: should be:0  0
 add_to_playlist: SUCCESS
@@ -476,4 +478,4 @@ add_to_playlist: SUCCESS
 get_plays: SUCCESS, 677
 add to playlist: should be:1  1
 add_to_playlist: SUCCESS
-add to playlist: should be:1  2
+add to playlist: should be:2  2

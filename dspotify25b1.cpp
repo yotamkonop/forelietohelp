@@ -278,6 +278,9 @@ StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2){
         Node<Playlist> *playlist1Node = findNodeAVL(playlistRoot, playlist1, playlistRealValueId);
         Node<Playlist> *playlist2Node = findNodeAVL(playlistRoot, playlist2, playlistRealValueId);
 
+        decreasePlaylistNum(playlist2Node->val.getIDTree());
+        decreasePlaylistNum(playlist1Node->val.getIDTree());
+
         Node<shared_ptr<Song>> *newIdRoot = mergeAVL(playlist1Node->val.getIDTree(), playlist2Node->val.getIDTree(),
             songRealValueId);
         Node<shared_ptr<Song>> *newPlaysRoot = mergeAVL(playlist1Node->val.getPlayedTree(),
@@ -297,12 +300,13 @@ StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2){
                 cout << "the counter of 139620 is: " << chechPtr->val.use_count() << endl;
             } catch (...){}*/
 
+
+
         delete playlist2Node->val.getIDTree();
         delete playlist2Node->val.getPlayedTree();
         playlist2Node->val.setIdTree(nullptr);
         playlist2Node->val.setPlayedTree(nullptr);
         deleteNodeAVL(playlistRoot, playlist2Node, playlistRealValueId);
-
 
 
         delete playlist1Node->val.getIDTree();
@@ -314,6 +318,7 @@ StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2){
         playlist1Node->val.setPlayedTree(newPlaysRoot);
         playlist1Node->val.setSongNum(lengthAVL(newIdRoot));
 
+        increasePlaylistNum(playlist1Node->val.getIDTree());
         //check
  /*       try {
             shared_ptr<Song> ptrcheck = std::make_shared<Song>(139620, 0);

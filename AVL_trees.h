@@ -232,6 +232,30 @@ void inorderToList(Node<shared_ptr<Song>>* root, ListNode<shared_ptr<Song>>*& he
     inorderToList(root->right, head, tail);
 }
 
+void decreasePlaylistNum(Node<shared_ptr<Song>> *node) {
+    if(node == nullptr) {
+        return;
+    }
+    if(node->val == nullptr) {
+        return;
+    }
+    node->val->setPlaylistNum(node->val->getPlaylistNum() - 1);
+    decreasePlaylistNum(node->left);
+    decreasePlaylistNum(node->right);
+}
+
+void increasePlaylistNum(Node<shared_ptr<Song>> *node) {
+    if(node == nullptr) {
+        return;
+    }
+    if(node->val == nullptr) {
+        return;
+    }
+    node->val->setPlaylistNum(node->val->getPlaylistNum() + 1);
+    increasePlaylistNum(node->left);
+    increasePlaylistNum(node->right);
+}
+
 template <typename Func>
 ListNode<shared_ptr<Song>>* mergeLists(ListNode<shared_ptr<Song>>* l1, ListNode<shared_ptr<Song>>* l2, Func func) {
     shared_ptr<Song> dummy_shared = nullptr;
@@ -253,8 +277,10 @@ ListNode<shared_ptr<Song>>* mergeLists(ListNode<shared_ptr<Song>>* l1, ListNode<
             tail->next = new ListNode<shared_ptr<Song>>(l2->treeNode);
             l2 = l2->next;
         } else {
+            if(l1->treeNode->getID() == 757410) {
+                cout << "num playlists: " << l1->treeNode->getPlaylistNum() << "  num pointers: " << l1->treeNode.use_count() << endl;
+            }
             tail->next = new ListNode<shared_ptr<Song>>(l2->treeNode);
-            l1->treeNode->setPlaylistNum(l1->treeNode->getPlaylistNum() - 1);
             l2 = l2->next;
             l1 = l1->next;
 
