@@ -235,6 +235,7 @@ ListNode<shared_ptr<Song>>* mergeLists(ListNode<shared_ptr<Song>>* l1, ListNode<
     ListNode<shared_ptr<Song>> dummy(dummy_shared);
     ListNode<shared_ptr<Song>>* tail = &dummy;
     comp compare;
+
     while (l1 && l2) {
         compare = func(l1->treeNode, l2->treeNode);
         if (compare == comp::SMALLER ) {
@@ -314,9 +315,7 @@ Node<std::shared_ptr<Song>>* mergeAVL(
     ListNode<std::shared_ptr<Song>>* mergedList = mergeLists(head1, head2, func);
 
     int len = countListLength(mergedList);
-
-    delete tail1;
-    delete tail2;
+    
     deleteLinked(head1);
     deleteLinked(head2);
 
