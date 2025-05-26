@@ -51,6 +51,7 @@ void RLRotate(Node<T>* &f) {
     LL(f->right);
     RR(f);
 }
+
 template <typename T>
 void balanceAVL(Node<T>*& root) {
     if(root == nullptr) {
@@ -144,7 +145,7 @@ bool deleteRootAVL(Node<T>*& root, Func RealValue) {
 }
 
 template <typename T, typename Func>
-bool deleteNodeAVL(Node<T>*& root, Node<T>* value_to_delete, Func RealValue) {
+bool deleteNodeAVL(Node<T>*& root, Node<T>*& value_to_delete, Func RealValue) {
     bool returnValue;
     if (root==nullptr) {
         throw std::runtime_error("No Such Node");
@@ -159,6 +160,7 @@ bool deleteNodeAVL(Node<T>*& root, Node<T>* value_to_delete, Func RealValue) {
     else {
         returnValue = deleteNodeAVL(root->left, value_to_delete, RealValue);
     }
+    root->updateHeight();
     if(root != nullptr) {
         if(root->getBalanceFactor() >= 2 || root->getBalanceFactor() <= -2) {
             balanceAVL(root);
