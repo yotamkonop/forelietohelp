@@ -202,6 +202,8 @@ int lengthAVL(Node<T>* root) {
     return 1 + lengthAVL(root->right) + lengthAVL(root->left);
 }
 
+
+
 template <typename T>
 struct ListNode {
     shared_ptr<Song> treeNode;
@@ -217,7 +219,8 @@ void inorderToList(Node<shared_ptr<Song>>* root, ListNode<shared_ptr<Song>>*& he
 
     ListNode<shared_ptr<Song>>* newNode = new ListNode<shared_ptr<Song>>(root->val);
     if (!head) {
-        head = tail = newNode;
+        head = newNode;
+        tail = newNode;
     } else {
         tail->next = newNode;
         tail = newNode;
@@ -312,6 +315,8 @@ Node<std::shared_ptr<Song>>* mergeAVL(
 
     int len = countListLength(mergedList);
 
+    delete tail1;
+    delete tail2;
     deleteLinked(head1);
     deleteLinked(head2);
 
