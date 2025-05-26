@@ -177,19 +177,6 @@ Node <T>* findMax(Node<T>* root) {
     return findMax(root->right);
 }
 
-template <typename T>
-Node <T>* findSecondMax(Node<T>* root) {
-    if(root->right == nullptr) {
-        if(root->left == nullptr) {
-            return root;
-        }
-        return findMax(root->left);
-    }
-    if (root->right->right==nullptr) {
-        return root;
-    }
-    return findSecondMax(root->right);
-}
 
 Node<shared_ptr<Song>>* findClosestBiggerSong(Node<shared_ptr<Song>>* root, int value_to_find_bigger_of, Node<shared_ptr<Song>>* curr_best_approx) {
     if(curr_best_approx == nullptr) {
