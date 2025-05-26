@@ -60,6 +60,11 @@ StatusType DSpotify::add_song(int songId, int plays){
     try {
         shared_ptr<Song> ptrS = std::make_shared<Song>(songId, plays);
         findNodeAVL(songRoot, ptrS, songRealValueIdPtr);
+    /*    try {
+            shared_ptr<Song> ptrcheck = std::make_shared<Song>(139620, 0);
+            Node<shared_ptr<Song>> *chechPtr = findNodeAVL(songRoot, ptrcheck, songRealValueIdPtr);
+            cout << "the counter of 139620 is: " << chechPtr->val.use_count() << endl;
+        } catch (...){}*/
         return StatusType::FAILURE;
     } catch (...) {
         try {
@@ -75,7 +80,11 @@ StatusType DSpotify::add_song(int songId, int plays){
                 cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
             } catch (...){}*/
 
-
+            /*try {
+                shared_ptr<Song> ptrcheck = std::make_shared<Song>(139620, 0);
+                Node<shared_ptr<Song>> *chechPtr = findNodeAVL(songRoot, ptrcheck, songRealValueIdPtr);
+                cout << "the counter of 139620 is: " << chechPtr->val.use_count() << endl;
+            } catch (...){}*/
             return StatusType::SUCCESS;
         } catch (...) {
             return StatusType::ALLOCATION_ERROR;
@@ -89,7 +98,7 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId){
     try {
         shared_ptr<Song> ptrcheck = std::make_shared<Song>(717117, 0);
         Node<shared_ptr<Song>> *chechPtr = findNodeAVL(songRoot, ptrcheck, songRealValueIdPtr);
-        cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
+ //       cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
     } catch (...){}
 
     if(playlistId <= 0 || songId <= 0) {
@@ -108,7 +117,7 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId){
         try {
             nodeToId= new Node<shared_ptr<Song>>(songNode->val);
             nodeToPlays= new Node<shared_ptr<Song>>(songNode->val);
-            cout << "add to playlist: should be:" << nodeToId->val->getPlaylistNum() << "  " << nodeToId->val.use_count() << " - 3 / 2" << endl;
+            cout << "add to playlist: should be:" << nodeToId->val->getPlaylistNum() << "  " << (nodeToId->val.use_count() - 3) / 2 << endl;
 
             try {
  /*               if (playlistNode->val.getIDTree() == nullptr) {
@@ -137,6 +146,10 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId){
                 insertNodeIntoAVL(playlistNode->val.getPlayedTree(), nodeToPlays, songRealValuePlaysPtr);
                 nodeToId->val->setPlaylistNum(nodeToId->val->getPlaylistNum() + 1);
                 playlistNode->val.setSongNum(playlistNode->val.getSongNum() + 1);
+
+          /*      if(nodeToId->val->getID() == 139620) {
+                    cout << nodeToId->val.use_count() << endl;
+                }*/
                 return StatusType::SUCCESS;
             }
         } catch (...) {
@@ -250,11 +263,11 @@ output_t<int> DSpotify::get_by_plays(int playlistId, int plays){
 StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2){
 
     //check
-    try {
-        shared_ptr<Song> ptrcheck = std::make_shared<Song>(717117, 0);
+ /*   try {
+        shared_ptr<Song> ptrcheck = std::make_shared<Song>(139620, 0);
         Node<shared_ptr<Song>> *chechPtr = findNodeAVL(songRoot, ptrcheck, songRealValueIdPtr);
-        cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
-    } catch (...){}
+        cout << "the counter of 139620 is: " << chechPtr->val.use_count() << endl;
+    } catch (...){}*/
 
     if(playlistId1 <= 0 || playlistId2 <= 0 || playlistId1 == playlistId2) {
         return StatusType::INVALID_INPUT;
@@ -277,14 +290,20 @@ StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2){
             cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
         } catch (...){}*/
 
+        //check
+ /*       try {
+                shared_ptr<Song> ptrcheck = std::make_shared<Song>(139620, 0);
+                Node<shared_ptr<Song>> *chechPtr = findNodeAVL(songRoot, ptrcheck, songRealValueIdPtr);
+                cout << "the counter of 139620 is: " << chechPtr->val.use_count() << endl;
+            } catch (...){}*/
+
+        delete playlist2Node->val.getIDTree();
+        delete playlist2Node->val.getPlayedTree();
+        playlist2Node->val.setIdTree(nullptr);
+        playlist2Node->val.setPlayedTree(nullptr);
         deleteNodeAVL(playlistRoot, playlist2Node, playlistRealValueId);
 
-        //check
-        try {
-            shared_ptr<Song> ptrcheck = std::make_shared<Song>(717117, 0);
-            Node<shared_ptr<Song>> *chechPtr = findNodeAVL(songRoot, ptrcheck, songRealValueIdPtr);
-            cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
-        } catch (...){}
+
 
         delete playlist1Node->val.getIDTree();
         delete playlist1Node->val.getPlayedTree();
@@ -296,11 +315,11 @@ StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2){
         playlist1Node->val.setSongNum(lengthAVL(newIdRoot));
 
         //check
-        try {
-            shared_ptr<Song> ptrcheck = std::make_shared<Song>(717117, 0);
+ /*       try {
+            shared_ptr<Song> ptrcheck = std::make_shared<Song>(139620, 0);
             Node<shared_ptr<Song>> *chechPtr = findNodeAVL(songRoot, ptrcheck, songRealValueIdPtr);
-            cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
-        } catch (...){}
+            cout << "the counter of 139620 is: " << chechPtr->val.use_count() << endl;
+        } catch (...){}*/
 
         return StatusType::SUCCESS;
     } catch (...) {

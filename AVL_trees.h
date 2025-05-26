@@ -215,9 +215,9 @@ struct ListNode {
 void inorderToList(Node<shared_ptr<Song>>* root, ListNode<shared_ptr<Song>>*& head, ListNode<shared_ptr<Song>>*& tail) {
     if (!root) return;
 
-    if(root->val->getID() == 717117) {
-        cout << root->val.use_count() << endl;
-    }
+ /*   if(root->val->getID() == 717117) {
+        cout << "inorder to list "<< root->val.use_count() << endl;
+    }*/
     inorderToList(root->left, head, tail);
 
     ListNode<shared_ptr<Song>>* newNode = new ListNode<shared_ptr<Song>>(root->val);
@@ -242,9 +242,9 @@ ListNode<shared_ptr<Song>>* mergeLists(ListNode<shared_ptr<Song>>* l1, ListNode<
     while (l1 && l2) {
         compare = func(l1->treeNode, l2->treeNode);
 
-        if(l1->treeNode->getID() == 717117) {
-            cout << l1->treeNode.use_count() << endl;
-        }
+ /*       if(l1->treeNode->getID() == 717117) {
+            cout << "mergelists " << l1->treeNode.use_count() << endl;
+        }*/
 
         if (compare == comp::SMALLER ) {
             tail->next = new ListNode<shared_ptr<Song>>(l1->treeNode);
@@ -263,9 +263,9 @@ ListNode<shared_ptr<Song>>* mergeLists(ListNode<shared_ptr<Song>>* l1, ListNode<
     }
 
     while (l1) {
-        if(l1->treeNode->getID() == 717117) {
-            cout << l1->treeNode.use_count() << endl;
-        }
+/*        if(l1->treeNode->getID() == 717117) {
+            cout << "merge lists "<< l1->treeNode.use_count() << endl;
+        }*/
         tail->next = new ListNode<shared_ptr<Song>>(l1->treeNode);
         l1 = l1->next;
         tail = tail->next;
@@ -293,9 +293,6 @@ int countListLength(ListNode<T>* head) {
 Node<shared_ptr<Song>>* buildAVLFromList(ListNode<shared_ptr<Song>>*& listHead, int n) {
     if (n <= 0 || !listHead) return nullptr;
 
-    if(listHead->treeNode->getID() == 717117) {
-        cout << listHead->treeNode.use_count() << endl;
-    }
     Node<shared_ptr<Song>>* left = buildAVLFromList(listHead, n / 2);
 
     Node<shared_ptr<Song>>* root = new Node<shared_ptr<Song>>(listHead->treeNode);  // copy the shared_ptr
@@ -311,12 +308,18 @@ Node<shared_ptr<Song>>* buildAVLFromList(ListNode<shared_ptr<Song>>*& listHead, 
 
 void deleteLinked(ListNode<shared_ptr<Song>> *head) {
     if(head == nullptr) return;
-    if(head->treeNode->getID() == 717117) {
-        cout << head->treeNode.use_count() << endl;
-    }
+ /*   if(head->treeNode->getID() == 139620) {
+        cout << "delete linked " << head->treeNode.use_count() << endl;
+    }*/
     deleteLinked(head->next);
     delete head;
 }
+
+/*void printList(ListNode<shared_ptr<Song>> *head) {
+    if(head == nullptr) return;
+    cout << head->treeNode->getID() << "    ";
+    printList(head->next);
+}*/
 
 template<typename Func>
 Node<std::shared_ptr<Song>>* mergeAVL(
@@ -337,8 +340,12 @@ Node<std::shared_ptr<Song>>* mergeAVL(
     deleteLinked(head1);
     deleteLinked(head2);
 
-    Node<shared_ptr<Song>> *root = buildAVLFromList(mergedList, len);
-
+    ListNode<shared_ptr<Song>> *copyOfMergedList = mergedList;
+//    printList(mergedList);
+ //   cout << endl;
+    Node<shared_ptr<Song>> *root = buildAVLFromList(copyOfMergedList, len);
+ //   printList(mergedList);
+//    cout << endl;
 
     deleteLinked(mergedList);
     return root;
