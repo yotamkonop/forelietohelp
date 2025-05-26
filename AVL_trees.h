@@ -216,7 +216,7 @@ void inorderToList(Node<shared_ptr<Song>>* root, ListNode<shared_ptr<Song>>*& he
     if (!root) return;
 
     if(root->val->getID() == 717117) {
-        cout << root->val.use_count();
+        cout << root->val.use_count() << endl;
     }
     inorderToList(root->left, head, tail);
 
@@ -243,7 +243,7 @@ ListNode<shared_ptr<Song>>* mergeLists(ListNode<shared_ptr<Song>>* l1, ListNode<
         compare = func(l1->treeNode, l2->treeNode);
 
         if(l1->treeNode->getID() == 717117) {
-            cout << l1->treeNode.use_count();
+            cout << l1->treeNode.use_count() << endl;
         }
 
         if (compare == comp::SMALLER ) {
@@ -264,7 +264,7 @@ ListNode<shared_ptr<Song>>* mergeLists(ListNode<shared_ptr<Song>>* l1, ListNode<
 
     while (l1) {
         if(l1->treeNode->getID() == 717117) {
-            cout << l1->treeNode.use_count();
+            cout << l1->treeNode.use_count() << endl;
         }
         tail->next = new ListNode<shared_ptr<Song>>(l1->treeNode);
         l1 = l1->next;
@@ -294,7 +294,7 @@ Node<shared_ptr<Song>>* buildAVLFromList(ListNode<shared_ptr<Song>>*& listHead, 
     if (n <= 0 || !listHead) return nullptr;
 
     if(listHead->treeNode->getID() == 717117) {
-        cout << listHead->treeNode.use_count();
+        cout << listHead->treeNode.use_count() << endl;
     }
     Node<shared_ptr<Song>>* left = buildAVLFromList(listHead, n / 2);
 
@@ -312,7 +312,7 @@ Node<shared_ptr<Song>>* buildAVLFromList(ListNode<shared_ptr<Song>>*& listHead, 
 void deleteLinked(ListNode<shared_ptr<Song>> *head) {
     if(head == nullptr) return;
     if(head->treeNode->getID() == 717117) {
-        cout << head->treeNode.use_count();
+        cout << head->treeNode.use_count() << endl;
     }
     deleteLinked(head->next);
     delete head;
