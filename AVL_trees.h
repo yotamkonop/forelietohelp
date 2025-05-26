@@ -8,6 +8,10 @@
 using namespace std;
 
 template <typename T>
+Node <T>* findMax(Node<T>* root);
+void deletePlaylistRoot(Node<Playlist> *& root);
+
+template <typename T>
 void LL(Node<T>*& d) {
 
     if (d == nullptr || d->left == nullptr) {
@@ -114,6 +118,58 @@ Node <T>* findNodeAVL(Node<T>*& root, T &value_to_find, Func RealValue) {
     return findNodeAVL(root->left, value_to_find, RealValue);
 }
 
+void deletePlaylist(Node<Playlist> *& root, Node<Playlist> *&to_remove) {
+    if(root == nullptr) {
+        throw std::runtime_error("No such Node");
+    }
+    if(root->val.getID() == to_remove->val.getID()) {
+        deletePlaylistRoot(root);
+    }
+    else if(to_remove->val.getID() > root->val.getID()){
+        deletePlaylist(root->right, to_remove);
+    }
+    else {
+        deletePlaylist(root->left, to_remove);
+    }
+
+    if(root != nullptr) {
+        root->updateHeight();
+        if(root->getBalanceFactor() >= 2 || root->getBalanceFactor() <= -2) {
+            balanceAVL(root);
+        }
+    }
+}
+
+void deletePlaylistRoot(Node<Playlist> *& root) {
+    if (root==nullptr) {
+        throw std::runtime_error("No Such Node");
+    }
+    if (root->left==nullptr && root->right==nullptr) {
+        delete root;
+        root = nullptr;
+
+    }
+    else if (root->right==nullptr) {
+        Node<Playlist>* temp = root->left;
+        root->left = nullptr;
+        delete root;
+        root = temp;
+    }
+    else if (root->left==nullptr) {
+        Node<Playlist>* temp = root->right;
+        root->right = nullptr;
+        delete root;
+        root = temp;
+    }
+    else {
+        Node<Playlist>* maxNode = findMax<Playlist>(root->left);
+        root->val = maxNode->val;
+        maxNode->val.setIdTree(nullptr);
+        maxNode->val.setPlayedTree(nullptr);
+        deletePlaylist(root->left, maxNode);
+    }
+}
+
 template <typename T, typename Func>
 bool deleteRootAVL(Node<T>*& root, Func RealValue) {
     if (root==nullptr) {
@@ -160,8 +216,8 @@ bool deleteNodeAVL(Node<T>*& root, Node<T>*& value_to_delete, Func RealValue) {
     else {
         returnValue = deleteNodeAVL(root->left, value_to_delete, RealValue);
     }
-    root->updateHeight();
     if(root != nullptr) {
+        root->updateHeight();
         if(root->getBalanceFactor() >= 2 || root->getBalanceFactor() <= -2) {
             balanceAVL(root);
         }
@@ -277,9 +333,9 @@ ListNode<shared_ptr<Song>>* mergeLists(ListNode<shared_ptr<Song>>* l1, ListNode<
             tail->next = new ListNode<shared_ptr<Song>>(l2->treeNode);
             l2 = l2->next;
         } else {
-            if(l1->treeNode->getID() == 757410) {
+      /*      if(l1->treeNode->getID() == 757410) {
                 cout << "num playlists: " << l1->treeNode->getPlaylistNum() << "  num pointers: " << l1->treeNode.use_count() << endl;
-            }
+            }*/
             tail->next = new ListNode<shared_ptr<Song>>(l2->treeNode);
             l2 = l2->next;
             l1 = l1->next;

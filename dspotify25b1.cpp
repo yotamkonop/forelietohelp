@@ -42,7 +42,7 @@ StatusType DSpotify::delete_playlist(int playlistId){
         Playlist play(playlistId);
         Node<Playlist> *playlist= findNodeAVL(playlistRoot, play, playlistRealValueId);
         if(playlist->val.getSongNum() == 0) {
-            deleteNodeAVL(playlistRoot, playlist, playlistRealValueId);
+            deletePlaylist(playlistRoot, playlist);
             return StatusType::SUCCESS;
         }
         else {
@@ -95,11 +95,11 @@ StatusType DSpotify::add_song(int songId, int plays){
 StatusType DSpotify::add_to_playlist(int playlistId, int songId){
 
     //check
-    try {
+/*    try {
         shared_ptr<Song> ptrcheck = std::make_shared<Song>(717117, 0);
         Node<shared_ptr<Song>> *chechPtr = findNodeAVL(songRoot, ptrcheck, songRealValueIdPtr);
- //       cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
-    } catch (...){}
+        cout << "the counter of 717117 is: " << chechPtr->val.use_count() << endl;
+    } catch (...){}*/
 
     if(playlistId <= 0 || songId <= 0) {
         return StatusType::INVALID_INPUT;
@@ -112,13 +112,13 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId){
         shared_ptr<Song> ptrS = std::make_shared<Song>(songId, 0);
         Node<shared_ptr<Song>> *songNode = findNodeAVL(songRoot, ptrS, songRealValueIdPtr);
         Node<Playlist> *playlistNode = findNodeAVL(playlistRoot, playlist, playlistRealValueId);
-
+    //    cout << "add to playlist start: should be equal (songs in playlist): " << playlistNode->val.getSongNum() << "   " << lengthAVL(playlistNode->val.getIDTree()) << endl;
+     //   cout << "add to playlist start: should be equal (songs in playlist): " << playlistNode->val.getSongNum() << "   " << lengthAVL(playlistNode->val.getPlayedTree()) << endl;
 
         try {
             nodeToId= new Node<shared_ptr<Song>>(songNode->val);
             nodeToPlays= new Node<shared_ptr<Song>>(songNode->val);
-            cout << "add to playlist: should be:" << nodeToId->val->getPlaylistNum() << "  " << (nodeToId->val.use_count() - 3) / 2 << endl;
-
+       //     cout << "add to playlist: should be (playlists for this song): " << nodeToId->val->getPlaylistNum() << "  " << (nodeToId->val.use_count() - 3) / 2 << endl;
             try {
  /*               if (playlistNode->val.getIDTree() == nullptr) {
                     cout << "here" << endl;
@@ -136,12 +136,24 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId){
                         cout << "dont exist" << endl;
                     }
                 }*/
+               /* if(songId == 757410) {
+                    cout << "here" << endl;
+                    cout << playlistNode->val.getIDTree()->val->getID() << endl;
+                    cout << "here 2" << endl;
+                    cout << playlistNode->val.getPlayedTree()->val->getID() << endl;
+                    cout << "here 3" << endl;
+                }*/
                 Node<shared_ptr<Song>> *check = findNodeAVL(playlistNode->val.getIDTree(), nodeToId->val, songRealValueIdPtr);
                 delete nodeToId;
                 delete nodeToPlays;
  //               cout << "add to playlist: fail :" << check->val.use_count() << endl;
                 return StatusType::FAILURE;
             } catch (...) {
+               /* if(songId == 757410) {
+                    cout << "here" << endl;
+                    cout << playlistNode->val.getIDTree()->val->getID() << endl;
+                    cout << playlistNode->val.getPlayedTree()->val->getID() << endl;
+                }*/
                 insertNodeIntoAVL(playlistNode->val.getIDTree(), nodeToId, songRealValueIdPtr);
                 insertNodeIntoAVL(playlistNode->val.getPlayedTree(), nodeToPlays, songRealValuePlaysPtr);
                 nodeToId->val->setPlaylistNum(nodeToId->val->getPlaylistNum() + 1);
@@ -150,6 +162,7 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId){
           /*      if(nodeToId->val->getID() == 139620) {
                     cout << nodeToId->val.use_count() << endl;
                 }*/
+      //          cout << "add to playlist end: should be equal (songs in playlist): " << playlistNode->val.getSongNum() << "   " << lengthAVL(playlistNode->val.getIDTree()) << endl;
                 return StatusType::SUCCESS;
             }
         } catch (...) {
@@ -205,6 +218,7 @@ StatusType DSpotify::remove_from_playlist(int playlistId, int songId){
 
         playlistNode->val.setSongNum(playlistNode->val.getSongNum() - 1);
 
+//        cout << "remove from playlist: should be equal (songs in playlist): " << playlistNode->val.getSongNum() << "   " << lengthAVL(playlistNode->val.getIDTree()) << endl;
 
         return StatusType::SUCCESS;
     } catch (...) {
@@ -306,13 +320,19 @@ StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2){
         delete playlist2Node->val.getPlayedTree();
         playlist2Node->val.setIdTree(nullptr);
         playlist2Node->val.setPlayedTree(nullptr);
-        deleteNodeAVL(playlistRoot, playlist2Node, playlistRealValueId);
 
+
+
+  //      cout << "check if its here before" << endl;
+        deletePlaylist(playlistRoot, playlist2Node);
+ //       cout << "check if its here after" << endl;
+
+
+
+ //       cout << "check here" << endl;
 
         delete playlist1Node->val.getIDTree();
         delete playlist1Node->val.getPlayedTree();
-
-
 
         playlist1Node->val.setIdTree(newIdRoot);
         playlist1Node->val.setPlayedTree(newPlaysRoot);
